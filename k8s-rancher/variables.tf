@@ -5,7 +5,7 @@
 # Node template to clone from
 variable "image" { 
 	// default = "/Datacenter Lab/Templates/temp-vm-centos-07"
-	default = "/Datacenter Lab/vm/Templates/temp-vm-centos-07"
+	default = "/Datacenter Lab/vm/Templates/temp-vm-centos-08"
 }
 
 # Node disk size in MB
