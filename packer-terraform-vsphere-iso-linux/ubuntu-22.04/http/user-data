@@ -1,0 +1,48 @@
+#cloud-config
+autoinstall:
+    version: 1
+    early-commands:
+        # workaround to stop ssh for packer as it thinks it timed out 
+        - sudo systemctl start ssh
+    # locale: en_US
+    # keyboard:
+    #     layout: en
+    #     variant: us
+    locale: fr_FR
+    keyboard:
+        layout: fr
+        variant: azerty
+
+    packages: [open-vm-tools, openssh-server, net-tools, perl, open-iscsi, ntp, curl, vim, ifupdown, zip, unzip, gnupg2, software-properties-common, apt-transport-https, ca-certificates, lsb-release, python3-pip, jq, cloud-init, git]
+    network:
+       network:
+          version: 2
+          ethernets:
+             ens192:
+                addresses: [10.200.200.56/24]
+                gateway4: 10.200.200.250
+                nameservers:
+                   addresses: [10.200.200.10,10.210.210.10]
+    # network:
+    #     network:
+    #         version: 2
+    #         ethernets:
+    #             ens192:
+    #                 dhcp4: true
+    identity:
+        hostname: ubuntu-server
+        username: cedric
+        password: "123456789"
+    ssh:
+        install-server: yes
+        allow-pw: yes
+        authorized-keys:
+            - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDGL9U7V2Y8e/uC04SSWZAS8l0OxM11BPC71Wbp8sGPhvziTOAh5nOXkbF7T9EzsPERmFWOFWVHqKwOO9VxfsBtVaaLhiRR0pqhXMfNwhKfKj1tOvD5dYWOgNGVkgQ6Bv93pX/6CtSNuOMlmtFsI9Lol4clqkpxFDFJ96h6WNisbUwRYnfXm5wFBLl5SkXnRHw8Y9aBzknwNmaWvcUVmJFYQGJs5rS1KCVo9JzmzXriK9qPnvjG2QRccaIYpKrNv8QTBYnn+GKZl+e/Mfj0VPhgl9AkGYT/7FeRmniMLsdDUzrTvIBkfX+C+GdfYd9CHekt+St12d3RXj2WLmozdlCajxnJUhbvZ/7kN+5cDD15lWUtlQUl/cNo9jn1N0/nuyHzzSPTtK3AMkM17IicGovS480FILFManNMdy4UmVCG5P0IjTKdLgVLci+R57E33x8NdCJFGNesqSAH82uvr0goT5qlfTsF28B5qmhg4YQkf8skN7A5SZn5OXdM9yAqmv8= cedric andrianirina@DESKTOP-HNMLSI2
+            # - SHA256:ds9PSaTL0HsXdYAtGLPpsHmlTRbczaYLWAEx6Rf1+6w
+        layout:
+            name: direct
+    user-data:
+        disable_root: false
+    late-commands:
+        - echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/ubuntu
+        - curtin in-target --target=/target -- chmod 440 /etc/sudoers.d/ubuntu

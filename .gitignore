@@ -1,0 +1,6 @@
+.terraform*
+.kube
+*.tfstate*
+*packer_cache*
+packer-terraform-vsphere-iso-linux\debian-8.11.1\packer_cache
+packer-terraform-vsphere-iso-linux\centos-7\packer_cache
